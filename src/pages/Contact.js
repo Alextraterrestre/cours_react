@@ -1,0 +1,17 @@
+const Contact = () => {
+    return(
+        <section>
+            <div  className="container-fluid" >
+                <div className="row">
+                    <h1> Contact </h1>
+                </div>
+                <div className="row">
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas bibendum mi purus, eu hendrerit felis eleifend in. Vivamus sapien massa, venenatis a nunc id, rhoncus tincidunt nisl. Suspendisse nunc arcu, porttitor vitae sodales non, pharetra vel elit. Sed vitae dignissim orci. Ut eget nulla vel erat euismod laoreet sed nec.
+                    </p>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+export default Contact
