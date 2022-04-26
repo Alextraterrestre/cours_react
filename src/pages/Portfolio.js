@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import Card from "../component/Card";
+import Pagination from "../component/Pagination";
 
 const Portfolio = () => {
     // on déclare la variable joke ET sa fonction/méthode setJoke
@@ -14,9 +15,15 @@ const Portfolio = () => {
             })
     }
 
+const nextPage = (page) => {
+    setPage(page);
+    console.log("Page:",page)
+}
+
+    let [page,setPage] = useState(1);
     let [gallery, setGallery] = useState([]);
     const loadPics = () => {
-        fetch("https://picsum.photos/v2/list?page=2&limit=3")
+        fetch("https://picsum.photos/v2/list?page="+page+"&limit=3")
             .then(response => response.json())
             .then(data => {
                 setGallery(data);
@@ -25,11 +32,9 @@ const Portfolio = () => {
     }
     // useEffect est une hook
     // qui permet d'accéder ici à l'état 'compentDidMount' du composant
-    // comme le ngOnInit ;) 
-    useEffect(() => {
-        loadJoke();
-        loadPics();
-    }, []);
+    // comme le ngOnInit ;)
+        useEffect(() => loadJoke,[]);
+        useEffect(() => loadPics,[page]);
 
     return (
         <section>
@@ -47,6 +52,11 @@ const Portfolio = () => {
                     </div>
                 </div>
                 <div className="row">
+                    <div className="col">
+                        <Pagination page={page} nextPage={nextPage} />
+                    </div>
+                </div>
+                <div className="row">
                     {
                         gallery.map((item) => {
                             let source = `https://picsum.photos/id/${item.id}/320/240`;
@@ -54,12 +64,18 @@ const Portfolio = () => {
                             let id = item.id;
                             let width = item.id;
                             let height = item.height;
+                            let dim = {'width':width, 'height':height};
                             return (
-                             <Card key={id} source={source} title={title} />
+                             <Card key={id} source={source} title={title} dim={dim}/>
                         )
                     })
                     }
                                 </div>
+                                <div className="row">
+                    <div className="col">
+                        <Pagination page={page} nextPage={nextPage} />
+                    </div>
+                </div>
                 </div>
         </section>
     )
