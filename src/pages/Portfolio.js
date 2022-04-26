@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-const Portfolio = () => {
-    //on déclare la variable joke ET sa fonction/méthode setJoke
-    //Les deux en même temps grâce au hook useState ()
-    let [joke, setJoke] = useState('');
+import { useEffect, useState } from "react"
+import Card from "../component/Card";
 
+const Portfolio = () => {
+    // on déclare la variable joke ET sa fonction/méthode setJoke
+    // les deux en même temps grâce au hook useState()
+    let [joke, setJoke] = useState('')
     const loadJoke = () => {
         fetch("https://api.chucknorris.io/jokes/random")
             .then(response => response.json())
@@ -13,25 +14,54 @@ const Portfolio = () => {
             })
     }
 
-    useEffect(()=> loadJoke(), [] );
+    let [gallery, setGallery] = useState([]);
+    const loadPics = () => {
+        fetch("https://picsum.photos/v2/list?page=2&limit=3")
+            .then(response => response.json())
+            .then(data => {
+                setGallery(data);
+                console.log(data);
+            })
+    }
+    // useEffect est une hook
+    // qui permet d'accéder ici à l'état 'compentDidMount' du composant
+    // comme le ngOnInit ;) 
+    useEffect(() => {
+        loadJoke();
+        loadPics();
+    }, []);
 
     return (
         <section>
-            <div className="container-fluid" >
+            <div className="container-fluid">
                 <div className="row">
                     <div className="col">
-                        <h1> Portfolio </h1>
-                        <button onClick={loadJoke}> Chuck Norris ? </button>
-                        <p>{joke}</p></div>
-
+                        <h1>Portfolio</h1>
+                        <button onClick={loadJoke}>Chuck Norris ?</button>
+                        <p>{joke}</p>
+                    </div>
                 </div>
                 <div className="row">
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu turpis imperdiet, porta neque sit amet, maximus ante. Nulla dignissim orci eu tempus hendrerit. Sed.
-                    </p>
+                    <div className="col">
+                        <p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte...</p>
+                    </div>
                 </div>
-            </div>
+                <div className="row">
+                    {
+                        gallery.map((item) => {
+                            let source = `https://picsum.photos/id/${item.id}/320/240`;
+                            let title = `Picture by ${item.author}`;
+                            let id = item.id;
+                            let width = item.id;
+                            let height = item.height;
+                            return (
+                             <Card key={id} source={source} title={title} />
+                        )
+                    })
+                    }
+                                </div>
+                </div>
         </section>
     )
-}
-
+};
 export default Portfolio
